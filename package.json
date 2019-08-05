@@ -4,8 +4,12 @@
   "description": "A personal password manager",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
   },
   "author": "Capp Wiedenhoefer",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^6.0.0"
+  }
 }
