@@ -1,3 +1,36 @@
-// This file is required by the index.html file and will
-// be executed in the renderer process for that window.
-// All of the Node.js APIs are available in this process.
+
+
+
+$(() => {
+
+    let pass = passwords.AUTHENTIFIANT;
+    pass.forEach(element => {
+
+
+        $("tbody").append(
+            `<tr>
+                <td>
+                    ${element.domain}
+                </td>
+                <td>
+                    ${element.login}
+                </td>
+                <td>
+                    ${element.password}
+                </td>
+            </tr>`
+        );
+    });
+    
+    $("#btn").click(() => {
+        const bf = new Blowfish( $('#input-text').val() );
+        const encrypted = bf.encrypt( "Secret message" );
+        let encryptedMime = bf.base64Encode(encrypted);
+        //alert(pass + " " + encryptedMime );
+
+       
+
+    });
+
+    
+});

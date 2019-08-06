@@ -11,5 +11,8 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^6.0.0"
+  },
+  "dependencies": {
+    "javascript-blowfish": "github:agorlov/javascript-blowfish"
   }
 }

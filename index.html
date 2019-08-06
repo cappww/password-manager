@@ -4,16 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
+    <script src="jquery-3.4.1.min.js"></script>
 </head>
 
 <body>
-    <h1>Hello World!</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    <h1>Password Manager</h1>
+    <input id="input-text">
+    <br>
+    <button id="btn">Click Me</button>
+
+    <table>
+        <tbody>
+            <tr>
+                <td>
+                    Website
+                </td>
+                <td>
+                    Username
+                </td>
+                <td>
+                    Password
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
     <!-- You can also require other files to run in this process -->
-    <script src="./renderer.js"></script>
+    <script src="Blowfish.js"></script>
+    <script src="passwords.js"></script>
+    <script src="renderer.js"></script>
 </body>
 
 </html>
