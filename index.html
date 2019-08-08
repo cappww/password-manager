@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Hello World!</title>
-    <script src="jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css"/>
 </head>
 
 <body>
@@ -15,7 +15,7 @@
 
     <table>
         <tbody>
-            <tr>
+            <tr class="col-titles">
                 <td>
                     Website
                 </td>
@@ -29,10 +29,9 @@
         </tbody>
     </table>
 
-    <!-- You can also require other files to run in this process -->
-    <script src="Blowfish.js"></script>
-    <script src="passwords.js"></script>
-    <script src="renderer.js"></script>
+    <!-- You can also require other files to run in this process  <script>window.$ = window.jQuery = require('jquery');</script>   -->
+    <script>window.$ = require('jquery');</script>
+    <script>require('./renderer.js')</script>
 </body>
 
 </html>

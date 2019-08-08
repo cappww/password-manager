@@ -1,0 +1,12 @@
+table {
+    align-self: center;
+}
+
+tr {
+    font-family: 'Courier New', Courier, monospace
+}
+
+.col-titles {
+    font-size: x-large;
+    font-weight: bold;
+}
