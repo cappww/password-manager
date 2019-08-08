@@ -2,3 +2,4 @@ node_modules/
 passwords.js
 .key
 Dashlane Export.json
+encrypted-data.txt
