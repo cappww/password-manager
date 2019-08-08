@@ -4,10 +4,10 @@ const {
     BrowserWindow,
     ipcMain
 } = require('electron');
+const log = require('electron-log');
 const path = require('path');
 const fs = require('fs');
-//const Blowfish = require('javascript-blowfish');
-//const renderer = require('./renderer.js');
+const Blowfish = require('javascript-blowfish');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -60,3 +60,18 @@ app.on('activate', function () {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+ipcMain.on('event:log', (e, arg) => {
+    log.debug(arg);
+});
+
+ipcMain.on('action:decrypt', (e, key) => {
+    key = fs.readFileSync('./secret/.key');
+    const bf = new Blowfish(key, 'cbc');
+    let encryptedData = fs.readFileSync('./.encrypted-data').toString();
+    let encrypted = bf.base64Decode(encryptedData);
+    let passwords = bf.decrypt(encrypted, 'cbcvector');
+    log.debug(passwords.substring(12950,13000));
+    let data = JSON.parse(passwords);
+    
+    // e.sender.send('show-passwords', data);
+});

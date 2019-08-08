@@ -2,7 +2,7 @@
   "name": "password-manager",
   "version": "1.0.0",
   "description": "A personal password manager",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ."
@@ -13,6 +13,7 @@
     "electron": "^6.0.0"
   },
   "dependencies": {
+    "electron-log": "^3.0.7",
     "javascript-blowfish": "github:agorlov/javascript-blowfish",
     "jquery": "^3.4.1"
   }
