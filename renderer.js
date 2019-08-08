@@ -11,6 +11,20 @@ $(() => {
     });
 
     ipcRenderer.on('show-passwords', (e, data) => {
-        alert(data.AUTHENTIFIANT[0]);
+        data.passwords.forEach(element => {
+            $("tbody").append(`
+                <tr>
+                    <td>
+                        ${element.domain || element.title}
+                    </td>
+                    <td>
+                        ${element.login}
+                    </td>
+                    <td>
+                        ${element.password}
+                    </td>
+                </tr>
+            `)
+        });
     })
 });

@@ -65,13 +65,19 @@ ipcMain.on('event:log', (e, arg) => {
 });
 
 ipcMain.on('action:decrypt', (e, key) => {
-    key = fs.readFileSync('./secret/.key');
+    //key = fs.readFileSync('./secret/.key').toString();
     const bf = new Blowfish(key, 'cbc');
-    let encryptedData = fs.readFileSync('./.encrypted-data').toString();
+    let encryptedData = fs.readFileSync('./secret/.encrypted-data').toString();
     let encrypted = bf.base64Decode(encryptedData);
-    let passwords = bf.decrypt(encrypted, 'cbcvector');
-    log.debug(passwords.substring(12950,13000));
-    let data = JSON.parse(passwords);
+    let result = bf.decrypt(encrypted, 'cbcvector');
+    result = result.replace(/\0/g, '');
+
+    try {
+        let data = JSON.parse(result) 
+        e.sender.send('show-passwords', data);
+    } catch (error) {
+        e.sender.send('alert', "Private key is incorrect");
+        console.log(error);
+    }
     
-    // e.sender.send('show-passwords', data);
 });
