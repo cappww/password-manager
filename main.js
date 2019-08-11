@@ -65,7 +65,7 @@ ipcMain.on('event:log', (e, arg) => {
 });
 
 ipcMain.on('action:decrypt', (e, key) => {
-    //key = fs.readFileSync('./secret/.key').toString();
+    key = fs.readFileSync('./secret/.key').toString();
     const bf = new Blowfish(key, 'cbc');
     let encryptedData = fs.readFileSync('./secret/.encrypted-data').toString();
     let encrypted = bf.base64Decode(encryptedData);

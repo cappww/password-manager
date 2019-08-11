@@ -23,6 +23,11 @@ $(() => {
                     <td>
                         ${element.password}
                     </td>
+                    <td>
+                        <button class="btn">
+                            <img src="./trash-alt-solid.svg">
+                        </button>
+                    </td>
                 </tr>
             `)
         });
