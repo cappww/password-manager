@@ -12,8 +12,9 @@ $(() => {
 
     ipcRenderer.on('show-passwords', (e, data) => {
         data.passwords.forEach(element => {
+            let index = 0;
             $("tbody").append(`
-                <tr>
+                <tr class="row${index}">
                     <td>
                         ${element.domain || element.title}
                     </td>
@@ -23,13 +24,24 @@ $(() => {
                     <td>
                         ${element.password}
                     </td>
-                    <td>
-                        <button class="btn">
-                            <img src="./trash-alt-solid.svg">
-                        </button>
-                    </td>
-                </tr>
-            `)
+                </tr>`
+            );
+            $(".row"+index).append(`
+                <td>
+                    <button class="btn${index}">
+                        <img src="./assets/edit-regular.svg">
+                    </button>
+                    <button class="btn${index}">
+                        <img src="./assets/trash-alt-solid.svg">
+                    </button>
+                </td>
+            `);
+            $(".btn" + index).hide();
+            $(".row"+index).hover(() => {
+                $(".btn"+index).show();
+            }, () => {
+                $(".btn"+index).hide();
+            });
         });
-    })
+    });
 });
