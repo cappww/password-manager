@@ -33,6 +33,9 @@ $(() => {
             $(this).append(
                 `<td id="col">
                     <button class="btn">
+                        <img src="./assets/clipboard-regular.svg">
+                    </button>
+                    <button class="btn">
                         <img src="./assets/edit-regular.svg">
                     </button>
                     <button class="btn">
