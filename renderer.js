@@ -24,28 +24,29 @@ $(() => {
                     <td>
                         ${element.password}
                     </td>
+                    <td id="col" style="width: 20%">
+
+                    </td>
                 </tr>`
             );
         });
 
         $('tr').not(':first').hover(function() {
             $(this).css('background', 'yellow');
-            $(this).append(
-                `<td id="col">
-                    <button class="btn">
+            $(this).children('#col').append(`
+                <button class="btn">
                         <img src="./assets/clipboard-regular.svg">
-                    </button>
-                    <button class="btn">
-                        <img src="./assets/edit-regular.svg">
-                    </button>
-                    <button class="btn">
-                        <img src="./assets/trash-alt-solid.svg">
-                    </button>
-                </td>`
-            );
+                </button>
+                <button class="btn">
+                    <img src="./assets/edit-regular.svg">
+                </button>
+                <button class="btn">
+                    <img src="./assets/trash-alt-solid.svg">
+                </button>
+            `);
         }, function(){
             $(this).css('background', '');
-            $("#col").remove();
+            $(".btn").remove();
         })
         
     });
