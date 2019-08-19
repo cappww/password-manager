@@ -2,7 +2,8 @@
 const {
     app,
     BrowserWindow,
-    ipcMain
+    ipcMain,
+    clipboard
 } = require('electron');
 const log = require('electron-log');
 const path = require('path');
@@ -22,10 +23,10 @@ function createWindow() {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true
         }
-    })
+    });
 
     // and load the index.html of the app.
-    mainWindow.loadFile('index.html')
+    mainWindow.loadFile('index.html');
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
@@ -36,7 +37,9 @@ function createWindow() {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null
-    })
+    });
+
+    clipboard.writeText('example string');
     
 }
 
@@ -80,4 +83,8 @@ ipcMain.on('action:decrypt', (e, key) => {
         console.log(error);
     }
     
+});
+
+ipcMain.on('action:copy', (e, password) => {
+    clipboard.writeText(password);
 });
