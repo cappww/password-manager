@@ -38,9 +38,6 @@ function createWindow() {
         // when you should delete the corresponding element.
         mainWindow = null
     });
-
-    clipboard.writeText('example string');
-    
 }
 
 // This method will be called when Electron has finished
