@@ -32,19 +32,28 @@ $(() => {
             );
         });
 
+        let state = {
+            editMode: false
+        }
+
         $('tr').not(':first').hover(function() {
-            $(this).css('background', 'yellow');
-            $(this).children('#col').append(`
-                <button class="btn" id="copy-btn" value="${data.passwords[0].password}">
-                    <img src="./assets/clipboard-regular.svg">
-                </button>
-                <button class="btn" id="edit-btn">
-                    <img src="./assets/edit-regular.svg">
-                </button>
-                <button class="btn" id="delete-btn">
-                    <img src="./assets/trash-alt-solid.svg">
-                </button>
-            `);
+            if($(this).prop("id") === "edit-mode"){
+                $(this).css('background', 'yellow');
+            } else if(!state.editMode) {
+                $(this).css('background', 'yellow');
+                $(this).children('#col').append(`
+                    <button class="btn" id="copy-btn" value="${data.passwords[0].password}">
+                        <img src="./assets/clipboard-regular.svg">
+                    </button>
+                    <button class="btn" id="edit-btn">
+                        <img src="./assets/edit-regular.svg">
+                    </button>
+                    <button class="btn" id="delete-btn">
+                        <img src="./assets/trash-alt-solid.svg">
+                    </button>
+                `);
+            }
+            
             let index = $(this).index()-1;
             let self = this;
             $('#copy-btn').click(function() {
@@ -53,20 +62,45 @@ $(() => {
             });
             
             $("#edit-btn").click(function() {
-                $(self).find("span").hide();
-                $(self).find('button').hide();
-                $(self).children().each(function(i, element) {
-                    if(i === 0){
-                        let name = data.passwords[index].domain || data.passwords[index].title;
-                        $(element).append(`<input value="${name}">`);
-                    } else if(i === 1) {
-                        let login = data.passwords[index].login;
-                        $(element).append(`<input value="${login}">`);
-                    } else if(i === 2) {
-                        let password = data.passwords[index].password;
-                        $(element).append(`<input value="${password}">`);
-                    }
-                })
+                const name = data.passwords[index].domain || data.passwords[index].title;
+                const login = data.passwords[index].login;
+                const password = data.passwords[index].password;
+                $(self).html(`
+                    <td>
+                        <input value="${name}">
+                    </td>
+                    <td>
+                        <input value="${login}">
+                    </td>
+                    <td>
+                        <input value="${password}">
+                    </td>
+                    <td id="col" style="width: 20%">
+                        <button>
+                            Save
+                        </button>
+                        <button>
+                            Cancel
+                        </button>
+                    </td>
+                `);
+                $(self).prop("id", "edit-mode");
+                state.editMode = true;
+
+                // $(self).find("span").hide();
+                // $(self).find('button').hide();
+                // $(self).children().each(function(i, element) {
+                //     if(i === 0){
+                //         let name = data.passwords[index].domain || data.passwords[index].title;
+                //         $(element).append(`<input value="${name}">`);
+                //     } else if(i === 1) {
+                //         let login = data.passwords[index].login;
+                //         $(element).append(`<input value="${login}">`);
+                //     } else if(i === 2) {
+                //         let password = data.passwords[index].password;
+                //         $(element).append(`<input value="${password}">`);
+                //     }
+                // });
             });
         }, function() {
             $(this).css('background', '');
