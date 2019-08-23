@@ -1,5 +1,22 @@
 const { ipcRenderer } = require('electron');
 
+function uniformData(obj) {
+    return (`
+        <td>
+            <span>${obj.domain || obj.title}</span>
+        </td>
+        <td>
+            <span>${obj.login}</span>
+        </td>
+        <td>
+            <span>${obj.password}</span>
+        </td>
+        <td class="col">
+
+        </td>
+    `);
+}
+
 $(() => {
 
     $('#btn').click(() => {
@@ -16,18 +33,7 @@ $(() => {
         data.passwords.forEach(element => {
             $("tbody").append(`
                 <tr class="row">
-                    <td>
-                        <span>${element.domain || element.title}</span>
-                    </td>
-                    <td>
-                        <span>${element.login}</span>
-                    </td>
-                    <td>
-                        <span>${element.password}</span>
-                    </td>
-                    <td id="col" style="width: 20%">
-
-                    </td>
+                    ${ uniformData(element) }
                 </tr>`
             );
         });
@@ -41,8 +47,8 @@ $(() => {
                 $(this).css('background', 'yellow');
             } else if(!state.editMode) {
                 $(this).css('background', 'yellow');
-                $(this).children('#col').append(`
-                    <button class="btn" id="copy-btn" value="${data.passwords[0].password}">
+                $(this).children('.col').append(`
+                    <button class="btn" id="copy-btn">
                         <img src="./assets/clipboard-regular.svg">
                     </button>
                     <button class="btn" id="edit-btn">
@@ -54,17 +60,19 @@ $(() => {
                 `);
             }
             
-            let index = $(this).index()-1;
             let self = this;
+            let index = $(this).index() - 1;
+            let passObj = data.passwords[index];
+
             $('#copy-btn').click(function() {
-                ipcRenderer.send('action:copy', data.passwords[index].password)
+                ipcRenderer.send('action:copy', passObj.password)
                 alert("Password copied to clipboard");
             });
             
             $("#edit-btn").click(function() {
-                const name = data.passwords[index].domain || data.passwords[index].title;
-                const login = data.passwords[index].login;
-                const password = data.passwords[index].password;
+                const name = passObj.domain || passObj.title;
+                const login = passObj.login;
+                const password = passObj.password;
                 $(self).html(`
                     <td>
                         <input value="${name}">
@@ -75,11 +83,11 @@ $(() => {
                     <td>
                         <input value="${password}">
                     </td>
-                    <td id="col" style="width: 20%">
+                    <td class="col">
                         <button>
                             Save
                         </button>
-                        <button>
+                        <button id="cancel-btn">
                             Cancel
                         </button>
                     </td>
@@ -87,21 +95,16 @@ $(() => {
                 $(self).prop("id", "edit-mode");
                 state.editMode = true;
 
-                // $(self).find("span").hide();
-                // $(self).find('button').hide();
-                // $(self).children().each(function(i, element) {
-                //     if(i === 0){
-                //         let name = data.passwords[index].domain || data.passwords[index].title;
-                //         $(element).append(`<input value="${name}">`);
-                //     } else if(i === 1) {
-                //         let login = data.passwords[index].login;
-                //         $(element).append(`<input value="${login}">`);
-                //     } else if(i === 2) {
-                //         let password = data.passwords[index].password;
-                //         $(element).append(`<input value="${password}">`);
-                //     }
-                // });
+                $('#cancel-btn').click(function () {
+                    state.editMode = false;
+                    $(self).children()
+                    $(self).prop("id", "");
+                    $(self).children().remove();
+                    $(self).append( uniformData(passObj) );
+                });
             });
+
+            
         }, function() {
             $(this).css('background', '');
             $(".btn").remove();

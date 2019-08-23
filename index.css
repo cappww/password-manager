@@ -11,6 +11,10 @@ tr {
     font-weight: bold;
 }
 
+.col {
+  width: 20%
+}
+
 button.btn {
   background-color: DodgerBlue; /* Blue background */
   border: none; /* Remove borders */
