@@ -1,28 +1,30 @@
 const { ipcRenderer } = require('electron');
 
-function uniformData(obj) {
-    return (`
-        <td>
-            <span>${obj.domain || obj.title}</span>
-        </td>
-        <td>
-            <span>${obj.login}</span>
-        </td>
-        <td>
-            <span>${obj.password}</span>
-        </td>
-        <td class="col">
+function displayUniformData(data) {
+    data.passwords.forEach(element => {
+        $("tbody").append(
+            `<tr class="row">
+                <td>
+                    <span>${element.domain || element.title}</span>
+                </td>
+                <td>
+                    <span>${element.login}</span>
+                </td>
+                <td>
+                    <span>${element.password}</span>
+                </td>
+                <td class="col">
 
-        </td>
-    `);
+                </td>
+            </tr>`
+        );
+    });
 }
 
 $(() => {
 
     $('#btn').click(() => {
         ipcRenderer.send('action:decrypt', $('#private-key').val());
-        $('#btn').remove();
-        $('#private-key').remove();
     });
 
     ipcRenderer.on('alert', (e, data) => {
@@ -30,13 +32,9 @@ $(() => {
     });
 
     ipcRenderer.on('show-passwords', (e, data) => {
-        data.passwords.forEach(element => {
-            $("tbody").append(`
-                <tr class="row">
-                    ${ uniformData(element) }
-                </tr>`
-            );
-        });
+        $('#btn').remove();
+        $('#private-key').remove();
+        displayUniformData(data);
 
         let state = {
             editMode: false
@@ -84,7 +82,7 @@ $(() => {
                         <input value="${password}">
                     </td>
                     <td class="col">
-                        <button>
+                        <button id="save-btn">
                             Save
                         </button>
                         <button id="cancel-btn">
@@ -100,7 +98,32 @@ $(() => {
                     $(self).children()
                     $(self).prop("id", "");
                     $(self).children().remove();
-                    $(self).append( uniformData(passObj) );
+                    $(self).append( 
+                        `<td>
+                            <span>${passObj.domain || passObj.title}</span>
+                        </td>
+                        <td>
+                            <span>${passObj.login}</span>
+                        </td>
+                        <td>
+                            <span>${passObj.password}</span>
+                        </td>
+                        <td class="col">
+
+                        </td>`
+                    );
+                });
+
+                $('#save-btn').click(function(){
+                    let dataArr = $(self).contents().find('input');
+                    const name = dataArr[0].value;
+                    const login = dataArr[1].value;
+                    const password = dataArr[2].value;
+
+                    passObj.domain = name;
+                    passObj.login = login;
+                    passObj.password = password;
+                    ipcRenderer.send("action:save-encrypt", data);
                 });
             });
 

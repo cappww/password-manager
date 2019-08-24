@@ -29,7 +29,7 @@ function createWindow() {
     mainWindow.loadFile('index.html');
 
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
+    //mainWindow.webContents.openDevTools()
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
@@ -64,13 +64,13 @@ ipcMain.on('event:log', (e, arg) => {
     log.debug(arg);
 });
 
+let bf;
 ipcMain.on('action:decrypt', (e, key) => {
     key = fs.readFileSync('./secret/.key').toString();
-    const bf = new Blowfish(key, 'cbc');
+    bf = new Blowfish(key, 'cbc');
     let encryptedData = fs.readFileSync('./secret/.encrypted-data').toString();
     let encrypted = bf.base64Decode(encryptedData);
-    let result = bf.decrypt(encrypted, 'cbcvector');
-    result = result.replace(/\0/g, '');
+    let result = bf.decrypt(encrypted, 'cbcvector').replace(/\0/g, '');
 
     try {
         let data = JSON.parse(result) 
@@ -79,7 +79,29 @@ ipcMain.on('action:decrypt', (e, key) => {
         e.sender.send('alert', "Private key is incorrect");
         console.log(error);
     }
+});
+
+ipcMain.on('action:save-encrypt', async(e, data) => {
+
     
+    let encryption = bf.base64Encode( bf.encrypt(JSON.stringify(data), 'cbcvector') );
+    fs.writeFileSync('./secret/.new-encrypted-data', encryption);
+    
+    //Go through decryption again
+
+    let encryptedData = fs.readFileSync('./secret/.new-encrypted-data').toString();
+    let encrypted = bf.base64Decode(encryptedData);
+    let result = bf.decrypt(encrypted, 'cbcvector').replace(/\0/g, '');
+
+    try {
+        let data = JSON.parse(result);
+        console.log(data);
+        await mainWindow.loadFile('index.html');
+        e.sender.send('show-passwords', data);
+    } catch (error) {
+        e.sender.send('alert', "Something went wrong");
+        console.log(error);
+    }
 });
 
 ipcMain.on('action:copy', (e, password) => {
