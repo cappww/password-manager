@@ -127,6 +127,13 @@ $(() => {
                 });
             });
 
+            $('#delete-btn').click(function () {
+                if (confirm(`Are you sure you want to delete ${passObj.domain || passObj.title}?`)) {
+                    data.passwords.splice(index, 1);
+                    ipcRenderer.send("action:save-encrypt", data);
+                }
+            });
+
             
         }, function() {
             $(this).css('background', '');

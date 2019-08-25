@@ -82,12 +82,8 @@ ipcMain.on('action:decrypt', (e, key) => {
 });
 
 ipcMain.on('action:save-encrypt', async(e, data) => {
-
-    
     let encryption = bf.base64Encode( bf.encrypt(JSON.stringify(data), 'cbcvector') );
     fs.writeFileSync('./secret/.new-encrypted-data', encryption);
-    
-    //Go through decryption again
 
     let encryptedData = fs.readFileSync('./secret/.new-encrypted-data').toString();
     let encrypted = bf.base64Decode(encryptedData);
@@ -95,7 +91,6 @@ ipcMain.on('action:save-encrypt', async(e, data) => {
 
     try {
         let data = JSON.parse(result);
-        console.log(data);
         await mainWindow.loadFile('index.html');
         e.sender.send('show-passwords', data);
     } catch (error) {
