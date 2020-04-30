@@ -16,7 +16,7 @@
   "dependencies": {
     "electron-log": "^3.0.7",
     "javascript-blowfish": "github:agorlov/javascript-blowfish",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "json-source-map": "^0.6.1"
   }
 }
